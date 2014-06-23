@@ -4,9 +4,23 @@
   "main": "server/main.js",
   "author": "Hack Reactor",
   "license": "Copyright 2013, Hack Reactor. All rights reserved.",
-  "dependencies": {},
+  "dependencies": {
+    "bower": "^1.3.5"
+  },
   "devDependencies": {
     "request": "^2.34.0",
     "chai": "^1.9.0"
-  }
+  },
+  "description": "chat room server on node",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/hackreactor/2014-06-chatterbox-server.git"
+  },
+  "bugs": {
+    "url": "https://github.com/hackreactor/2014-06-chatterbox-server/issues"
+  },
+  "homepage": "https://github.com/hackreactor/2014-06-chatterbox-server"
 }

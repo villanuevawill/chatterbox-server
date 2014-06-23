@@ -1,0 +1,90 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>chatterbox</title>
+
+    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css"></link>
+    <link rel="stylesheet" href="styles/styles.css">
+
+    <!-- dependencies -->
+    <script src="bower_components/jquery/jquery.min.js"></script>
+    <script src="bower_components/underscore/underscore.js"></script>
+    <script src="bower_components/moment/moment.js"></script>
+    <script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
+    <script src="bower_components/handlebars/handlebars.js"></script>
+
+    <!-- app scripts -->
+    <script src="scripts/config.js"></script>
+    <script src="scripts/app.js"></script>
+  </head>
+  <body>
+    <div id="main" class="container-fluid">
+      <div class="row">
+        <h1 id="title"><span>chatter</span>Box Client</h1>
+        <div class="col-md-2"></div>
+        <div class="col-md-8">
+          <div class="row">
+            <div class="col left col-md-8">
+              <h1 class="room-title"></h1>
+              <div>
+                <form id="send">
+                  <div class="row">
+                    <div class="col-md-12">
+                      <h2 class="name"></h2>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-10">
+                      <input id="message" class="form-control" type="textfield" placeholder="Enter message"/>
+                    </div>
+                    <div class="col-md-2">
+                      <button class="submit btn btn-primary">Send</button>
+                    </div>
+                  </div>
+                </form>
+              </div>
+              <div id="chats"></div>
+            </div>
+            <div class="col right col-md-4">
+              <h1>Chat Rooms</h1>
+              <form>
+                <div class="row">
+                  <div class='col-md-8'>
+                    <input type="textfield" class="form-control"  placeholder="Add new room"/>
+                  </div>
+                  <div class='col-md-4'>
+                    <button id="add-room" class="btn btn-primary">Add</button>
+                  </div>
+                </div>
+              </form>
+              <h3 class="all-rooms room"><a href="#">All Rooms</a></h3>
+              <div id="roomSelect" class="list-group"></div>
+                <h2>Friends</h2>
+                <ul id="friendSelect" class='list-group'></ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+
+  <!-- Handlebar templates -->
+  <script id="message-template" type="text/x-handlebars-template">
+    <div class="chat panel panel-info">
+      <div class="panel-heading">
+        <h3 class="username panel-title">{{username}}</h3>
+        <span class="time pull-right">{{time}}</span>
+      </div>
+      <div class="message panel-body">{{text}}</div>
+    </div>
+  </script>
+
+  <script id="room-template" type="text/x-handlebars-template">
+    <a class="room list-group-item" href="#">{{roomname}}</a>
+  </script>
+
+  <script id="friend-template" type="text/x-handlebars-template">
+    <li class="friend list-group-item">{{username}}</li>
+  </script>
+</html>
