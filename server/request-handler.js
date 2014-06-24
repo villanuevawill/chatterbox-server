@@ -7,7 +7,8 @@
 var fs = require('fs');
 // var storage = {results: []};
 // var qs = require('querystring');
-//
+
+
 exports.handler = function(request, response) {
 
   /* the 'request' argument comes from nodes http module. It includes info about the
@@ -16,12 +17,10 @@ exports.handler = function(request, response) {
   /* Documentation for both request and response can be found at
    * http://nodemanual.org/0.8.14/nodejs_ref_guide/http.html */
   console.log('Serving request type ' + request.method + ' for url ' + request.url);
-  var responseBody,
-      statusCode = 404;
+  var responseBody;
 
   if (request.url === '/classes/messages' || request.url === '/classes/room1'){
     if (request.method === 'POST') {
-      statusCode = 201;
       var body = '';
       request.on('data', function (data) {
         body += data;
@@ -31,18 +30,23 @@ exports.handler = function(request, response) {
         storage = JSON.parse(storage);
         storage.results.push(JSON.parse(body));
         fs.writeFileSync('/Users/student/Code/davidgw/2014-06-chatterbox-server/server/storage.txt', JSON.stringify(storage));
+        completeResponse(201, response, 'Post Successful');
       });
     }
     else if (request.method === 'GET') {
       responseBody = fs.readFileSync('/Users/student/Code/davidgw/2014-06-chatterbox-server/server/storage.txt');
-      statusCode = 200;
+      completeResponse(200, response, responseBody);
     }
   }
+  else {
+    completeResponse(404, response, 'Not Found');
+  }
+};
 
+var completeResponse = function(statusCode, response, responseBody) {
   /* Without this line, this server wouldn't work. See the note
    * below about CORS. */
   var headers = defaultCorsHeaders;
-
   headers['Content-Type'] = 'text/plain';
 
   /* .writeHead() tells our server what HTTP status code to send back */
