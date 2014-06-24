@@ -4,11 +4,12 @@
  * You'll have to figure out a way to export this function from
  * this file and include it in basic-server.js so that it actually works.
  * *Hint* Check out the node module documentation at http://nodejs.org/api/modules.html. */
-
-var storage = {results: []};
+var fs = require('fs');
+// var storage = {results: []};
 // var qs = require('querystring');
+//
+exports.handler = function(request, response) {
 
-exports.handleRequest = function(request, response) {
   /* the 'request' argument comes from nodes http module. It includes info about the
   request - such as what URL the browser is requesting. */
 
@@ -18,7 +19,7 @@ exports.handleRequest = function(request, response) {
   var responseBody,
       statusCode = 404;
 
-  if (request.url === '/classes/messages'){
+  if (request.url === '/classes/messages' || request.url === '/classes/room1'){
     if (request.method === 'POST') {
       statusCode = 201;
       var body = '';
@@ -26,11 +27,14 @@ exports.handleRequest = function(request, response) {
         body += data;
       });
       request.on('end', function () {
+        var storage = fs.readFileSync('/Users/student/Code/davidgw/2014-06-chatterbox-server/server/storage.txt');
+        storage = JSON.parse(storage);
         storage.results.push(JSON.parse(body));
+        fs.writeFileSync('/Users/student/Code/davidgw/2014-06-chatterbox-server/server/storage.txt', JSON.stringify(storage));
       });
     }
     else if (request.method === 'GET') {
-      responseBody = JSON.stringify(storage);
+      responseBody = fs.readFileSync('/Users/student/Code/davidgw/2014-06-chatterbox-server/server/storage.txt');
       statusCode = 200;
     }
   }
