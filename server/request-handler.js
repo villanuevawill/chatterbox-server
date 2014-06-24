@@ -18,9 +18,11 @@ exports.handler = function(request, response) {
    * http://nodemanual.org/0.8.14/nodejs_ref_guide/http.html */
   console.log('Serving request type ' + request.method + ' for url ' + request.url);
   var responseBody;
-
   if (request.url === '/classes/messages' || request.url === '/classes/room1'){
-    if (request.method === 'POST') {
+    if (request.method === 'OPTIONS'){
+      completeResponse(201, response, '');
+    }
+    else if (request.method === 'POST') {
       var body = '';
       request.on('data', function (data) {
         body += data;
@@ -30,7 +32,7 @@ exports.handler = function(request, response) {
         storage = JSON.parse(storage);
         storage.results.push(JSON.parse(body));
         fs.writeFileSync('/Users/student/Code/davidgw/2014-06-chatterbox-server/server/storage.txt', JSON.stringify(storage));
-        completeResponse(201, response, 'Post Successful');
+        completeResponse(201, response, '"success"');
       });
     }
     else if (request.method === 'GET') {
@@ -47,7 +49,7 @@ var completeResponse = function(statusCode, response, responseBody) {
   /* Without this line, this server wouldn't work. See the note
    * below about CORS. */
   var headers = defaultCorsHeaders;
-  headers['Content-Type'] = 'text/plain';
+  headers['Content-Type'] = 'application/json';
 
   /* .writeHead() tells our server what HTTP status code to send back */
   response.writeHead(statusCode, headers);

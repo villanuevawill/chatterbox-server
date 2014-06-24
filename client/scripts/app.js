@@ -2,18 +2,18 @@ var app = {
 
   init: function () {
     app.displayUserName();
-    app.fetch();
+    // app.fetch();
     app.initEventHandlers();
-    setInterval(function() {
-      app.fetch();
-    }, 2000);
+    // setInterval(function() {
+    //   app.fetch();
+    // }, 2000);
   },
 
   _activeChatRoom: false,
 
   numMessagesDisplayed: 10,
 
-  _server: 'https://api.parse.com/1/classes/chatterbox',
+  _server: 'http://127.0.0.1:3000/classes/messages',
 
   _roomList: {},
 
@@ -125,9 +125,10 @@ var app = {
       type: 'POST',
       data: JSON.stringify(message),
       contentType: 'application/json',
+      dataType: 'json',
       success: function() {
         $('#send #message').val('');
-        app.fetch();
+        // app.fetch();
       },
       error: function() {
         throw 'Could not send message';
