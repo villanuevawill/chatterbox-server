@@ -21,7 +21,7 @@ exports.handler = function(request, response) {
   var responseBody;
 
   if (request.url === '/') {
-    var clientHTML = fs.readFileSync('/Users/student/Code/davidgw/2014-06-chatterbox-server/client/index.html');
+    var clientHTML = fs.readFileSync('../client/index.html');
     completeResponse(200, response, clientHTML, 'text/HTML');
   }
   else if (request.url === '/classes/messages' || request.url === '/classes/room1'){
@@ -34,22 +34,22 @@ exports.handler = function(request, response) {
         body += data;
       });
       request.on('end', function () {
-        var storage = fs.readFileSync('/Users/student/Code/davidgw/2014-06-chatterbox-server/server/storage.txt');
+        var storage = fs.readFileSync('./storage.txt');
         storage = JSON.parse(storage);
         var newMessage = JSON.parse(body);
         newMessage.createdAt = new Date().toISOString();
         storage.results.unshift(newMessage);
-        fs.writeFileSync('/Users/student/Code/davidgw/2014-06-chatterbox-server/server/storage.txt', JSON.stringify(storage));
+        fs.writeFileSync('./storage.txt', JSON.stringify(storage));
         completeResponse(201, response, '"success"');
       });
     }
     else if (request.method === 'GET') {
-      responseBody = fs.readFileSync('/Users/student/Code/davidgw/2014-06-chatterbox-server/server/storage.txt');
+      responseBody = fs.readFileSync('./storage.txt');
       completeResponse(200, response, responseBody);
     }
   }
   else {
-    var url = '/Users/student/Code/davidgw/2014-06-chatterbox-server/client' + request.url;
+    var url = '../client' + request.url;
     fs.exists(url, function(exists) {
       console.log(url);
       if (exists) {
