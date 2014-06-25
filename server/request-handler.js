@@ -30,7 +30,9 @@ exports.handler = function(request, response) {
       request.on('end', function () {
         var storage = fs.readFileSync('/Users/student/Code/davidgw/2014-06-chatterbox-server/server/storage.txt');
         storage = JSON.parse(storage);
-        storage.results.push(JSON.parse(body));
+        var newMessage = JSON.parse(body);
+        newMessage.createdAt = new Date().toISOString();
+        storage.results.unshift(newMessage);
         fs.writeFileSync('/Users/student/Code/davidgw/2014-06-chatterbox-server/server/storage.txt', JSON.stringify(storage));
         completeResponse(201, response, '"success"');
       });
