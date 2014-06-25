@@ -5,6 +5,7 @@
  * this file and include it in basic-server.js so that it actually works.
  * *Hint* Check out the node module documentation at http://nodejs.org/api/modules.html. */
 var fs = require('fs');
+var path = require('path');
 // var storage = {results: []};
 // var qs = require('querystring');
 
@@ -18,7 +19,12 @@ exports.handler = function(request, response) {
    * http://nodemanual.org/0.8.14/nodejs_ref_guide/http.html */
   console.log('Serving request type ' + request.method + ' for url ' + request.url);
   var responseBody;
-  if (request.url === '/classes/messages' || request.url === '/classes/room1'){
+
+  if (request.url === '/') {
+    var clientHTML = fs.readFileSync('/Users/student/Code/davidgw/2014-06-chatterbox-server/client/index.html');
+    completeResponse(200, response, clientHTML, 'text/HTML');
+  }
+  else if (request.url === '/classes/messages' || request.url === '/classes/room1'){
     if (request.method === 'OPTIONS'){
       completeResponse(201, response, '');
     }
@@ -43,15 +49,32 @@ exports.handler = function(request, response) {
     }
   }
   else {
-    completeResponse(404, response, 'Not Found');
+    var url = '/Users/student/Code/davidgw/2014-06-chatterbox-server/client' + request.url;
+    fs.exists(url, function(exists) {
+      console.log(url);
+      if (exists) {
+        var clientHTML = fs.readFileSync(url);
+        var contentType = 'text/HTML';
+        if (path.extname(url) === '.js') {
+          contentType = 'text/javascript';
+        }
+        else if (path.extname(url) === '.css') {
+          contentType = 'text/css';
+        }
+        completeResponse(200, response, clientHTML, contentType);
+      }
+      else {
+        completeResponse(404, response, 'Not Found');
+      }
+    });
   }
 };
 
-var completeResponse = function(statusCode, response, responseBody) {
+var completeResponse = function(statusCode, response, responseBody, contentType) {
   /* Without this line, this server wouldn't work. See the note
    * below about CORS. */
   var headers = defaultCorsHeaders;
-  headers['Content-Type'] = 'application/json';
+  headers['Content-Type'] = contentType || 'application/json';
 
   /* .writeHead() tells our server what HTTP status code to send back */
   response.writeHead(statusCode, headers);

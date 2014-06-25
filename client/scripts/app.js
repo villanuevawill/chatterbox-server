@@ -58,7 +58,7 @@ var app = {
   },
 
   getUserName: function() {
-    return window.location.search.split('username=')[1];
+    return window.location.username;
   },
 
   displayUserName: function() {
